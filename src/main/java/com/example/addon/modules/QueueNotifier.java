@@ -4,26 +4,32 @@ import com.example.addon.Addon;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.orbit.EventHandler;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse.BodyHandlers;
+
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import meteordevelopment.meteorclient.settings.*;
 
 
 public class QueueNotifier extends Module {
     public QueueNotifier() {
         super(Addon.CATEGORY, "Queue Notifier", "An addon to notify you of your position in the 2b2t queue.");
-
-
     }
 
     Set<Integer> seen_positions = new HashSet<>();
+
+    private final SettingGroup sgDiscord = settings.createGroup("Discord");
+    private final Setting<String> discordWebhook = sgDiscord.add(new StringSetting.Builder()
+        .name("discord-webhook")
+        .description("Add your discord server's webhook.")
+        .defaultValue("your-webhook-from-server-settings")
+        .build()
+    );
 
     @EventHandler
     private void onQueueMsgReceive(ReceiveMessageEvent event) {
@@ -51,16 +57,19 @@ public class QueueNotifier extends Module {
     }
 
     private void sendPostRequest(String data) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("")) // ZAPIER url here, or wherever you want to send the number to
-            .header("Content-Type", "application/json")
-            .POST(BodyPublishers.ofString(data))
-            .build();
+        String username = mc.player.getName().getString();
+        try {
+            URL url = new URL(discordWebhook.get());
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            String jsonPayload = "{\"content\": \"" + username + " is in position " + data + " in the 2b2t queue.\"}"; // Format the data as a JSON payload
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
+            outputStream.close();
+        }
 
-        client.sendAsync(request, BodyHandlers.ofString())
-            .thenApply(HttpResponse::body)
-            .thenAccept(System.out::println)
-            .join();
+        catch (Exception ignored) {}
     }
 }
