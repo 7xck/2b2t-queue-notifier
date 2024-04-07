@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "id": "addon-template",
   "version": "${version}",
-  "name": "Addon Template",
-  "description": "An addon template for the Meteor addons.",
+  "name": "QueueNotifier",
+  "description": "An addon to notify you of your position in queue.",
   "authors": [
-    "seasnail"
+    "jackpashley"
   ],
   "contact": {
-    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
+    "repo": "https://github.com/jackpashley/2b2t-queue-notifier"
   },
   "icon": "assets/template/icon.png",
   "environment": "client",
