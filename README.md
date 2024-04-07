@@ -7,6 +7,8 @@ After installing the plugin, you need to set your server's discord webhook in th
 
 A webhook can be created in Server settings > Integrations > Webhooks > New Webhook
 
+You could create your own personal Discord server, or set it up with your friends so that you can monitor each other's position in the queue, for whatever reason.
+
 Paste this webhook url into the Discord Webhook field in the plugin's settings menu. 
 
 If you've done everything correctly, you'll get a notification in the channel you chose when you set up the webhook when you move 10 positions in the queue. The message is formatted as {player_name} is in position {position} in the 2b2t queue.
