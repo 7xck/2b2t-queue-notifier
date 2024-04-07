@@ -7,7 +7,7 @@ After installing the plugin, you need to set your server's discord webhook in th
 
 A webhook can be created in Server settings > Integrations > Webhooks > New Webhook
 
-You could create your own personal Discord server, or set it up with your friends so that you can monitor each other's position in the queue, for whatever reason.
+You could create your own personal Discord server, or set it up with your friends in your group's server so that you can monitor each other's position in the queue, for whatever reason.
 
 Paste this webhook url into the Discord Webhook field in the plugin's settings menu. 
 
