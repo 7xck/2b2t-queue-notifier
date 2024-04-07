@@ -68,6 +68,7 @@ public class QueueNotifier extends Module {
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
             outputStream.close();
+            int responseCode = connection.getResponseCode();
         }
 
         catch (Exception ignored) {}
