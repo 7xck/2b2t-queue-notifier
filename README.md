@@ -1,8 +1,3 @@
-# Meteor Addon Template
+# Simple 2b2t queue notifier for Meteor client (Minecraft)
 
-A template to allow easy usage of the Meteor Addon API.
-
-### How to use:  
-- Clone this project
-- Use this template to create new modules/commands
-- Run the mod with Meteor.
+You'll have to setup a Zapier or some other way of accepting a post request to send a notification
