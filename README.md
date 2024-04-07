@@ -15,6 +15,6 @@ If you've done everything correctly, you'll get a notification in the channel yo
 ## Roadmap
 
 - [ ] User can set the magnitude of the movement they want to be alerted for (instead of being alerted every 10 positions, be alerted every 5)
-- [ ] Fix issue where alert is skipped if user skips past a position. Currently if user goes from 361 to 359 instantaneously, no alert is sent.
+- [ ] Fix issue where alert is skipped if user skips past a position. Currently, if user goes from 361 to 359 instantaneously, no alert is sent.
 
 
