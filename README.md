@@ -10,3 +10,11 @@ A webhook can be created in Server settings > Integrations > Webhooks > New Webh
 Paste this webhook url into the Discord Webhook field in the plugin's settings menu. 
 
 If you've done everything correctly, you'll get a notification in the channel you chose when you set up the webhook when you move 10 positions in the queue. The message is formatted as {player_name} is in position {position} in the 2b2t queue.
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] User can set the magnitude of the movement they want to be alerted for (instead of being alerted every 10 positions, be alerted every 5)
+- [ ] Fix issue where alert is skipped if user skips past a position. Currently if user goes from 361 to 359 instantaneously, no alert is sent.
+
+
