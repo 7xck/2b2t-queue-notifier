@@ -18,7 +18,7 @@ jobs:
           permissions: write-all
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           automatic_release_tag: latest
-          prerelease: true
-          title: Dev Build
+          prerelease: false
+          title: Production
           files: |
             ./build/libs/*.jar
