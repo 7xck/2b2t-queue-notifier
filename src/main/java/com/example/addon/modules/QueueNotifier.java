@@ -17,12 +17,12 @@ import meteordevelopment.meteorclient.settings.*;
 
 
 public class QueueNotifier extends Module {
+    Set<Integer> seen_positions = new HashSet<>();
+    Integer last_alerted_position = 9999999;
+
     public QueueNotifier() {
         super(Addon.CATEGORY, "Queue Notifier", "An addon to notify you of your position in the 2b2t queue.");
     }
-
-    Set<Integer> seen_positions = new HashSet<>();
-
     private final SettingGroup sgDiscord = settings.createGroup("Discord");
     private final Setting<String> discordWebhook = sgDiscord.add(new StringSetting.Builder()
         .name("discord-webhook")
@@ -30,19 +30,40 @@ public class QueueNotifier extends Module {
         .defaultValue("your-webhook-from-server-settings")
         .build()
     );
+    private final SettingGroup sgAlertStep = settings.createGroup("Alert Settings");
+    private final Setting<Integer> queueAlertStep = sgAlertStep.add(new IntSetting.Builder()
+        .name("queue-step")
+        .description("Set the magnitude of movement to alert on. Max 50.")
+        .defaultValue(10)
+        .min(1)
+        .max(50)
+        .noSlider()
+        .build()
+    );
+    private final Setting<Boolean> queueAggressiveAlert = sgAlertStep.add(new BoolSetting.Builder()
+        .name("aggro-alert")
+        .description("Aggressively alert when you're close to position 1.")
+        .defaultValue(true)
+        .build()
+    );
 
     @EventHandler
     private void onQueueMsgReceive(ReceiveMessageEvent event) {
         String msg = event.getMessage().getString();
-
         // Use regular expression to find numbers in the message
         Integer extractedInt = extractQueuePosition(msg);
+        boolean time_to_alert = (last_alerted_position - extractedInt) >= queueAlertStep.get();
 
-        if (!seen_positions.contains(extractedInt) && extractedInt % 10 == 0)  {
-            seen_positions.add(extractedInt);
+        if (time_to_alert) {
+            last_alerted_position = extractedInt;
             sendPostRequest(String.valueOf(extractedInt));
         }
-
+        else if (queueAggressiveAlert.get() && extractedInt < 10) {
+            if (!seen_positions.contains(extractedInt)) {
+                seen_positions.add(extractedInt);
+                sendPostRequest(String.valueOf(extractedInt));
+            }
+        }
     }
 
     public static int extractQueuePosition(String text) {
@@ -57,8 +78,9 @@ public class QueueNotifier extends Module {
     }
 
     private void sendPostRequest(String data) {
-        String username = mc.player.getName().getString();
         try {
+            assert mc.player != null;
+            String username = mc.player.getName().getString();
             URL url = new URL(discordWebhook.get());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
