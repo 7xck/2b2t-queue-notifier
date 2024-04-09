@@ -19,6 +19,7 @@ import meteordevelopment.meteorclient.settings.*;
 public class QueueNotifier extends Module {
     Set<Integer> seen_positions = new HashSet<>();
     Integer last_alerted_position = 9999999;
+    static Pattern pattern = Pattern.compile("Position in queue: (\\d+)");
 
     public QueueNotifier() {
         super(Addon.CATEGORY, "Queue Notifier", "An addon to notify you of your position in the 2b2t queue.");
@@ -67,13 +68,11 @@ public class QueueNotifier extends Module {
     }
 
     public static int extractQueuePosition(String text) {
-        Pattern pattern = Pattern.compile("Position in queue: (\\d+)");
         Matcher matcher = pattern.matcher(text);
-
         if (matcher.find()) {
             return Integer.parseInt(matcher.group(1));
         } else {
-            return 11;
+            return 0;
         }
     }
 
