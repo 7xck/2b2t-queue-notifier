@@ -67,12 +67,12 @@ public class QueueNotifier extends Module {
         }
     }
 
-    public static int extractQueuePosition(String text) {
+    public int extractQueuePosition(String text) {
         Matcher matcher = pattern.matcher(text);
         if (matcher.find()) {
             return Integer.parseInt(matcher.group(1));
         } else {
-            return 0;
+            return last_alerted_position;
         }
     }
 
