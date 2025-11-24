@@ -3,6 +3,8 @@ package com.example.addon.modules;
 import com.example.addon.Addon;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
+import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
+import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.orbit.EventHandler;
 
 import java.io.OutputStream;
@@ -47,6 +49,23 @@ public class QueueNotifier extends Module {
         .defaultValue(true)
         .build()
     );
+
+    @EventHandler
+    private void onGameJoined(GameJoinedEvent event) {
+        // Reset state when joining a new game/server
+        resetState();
+    }
+
+    @EventHandler
+    private void onGameLeft(GameLeftEvent event) {
+        // Reset state when leaving a game/server
+        resetState();
+    }
+
+    private void resetState() {
+        seen_positions.clear();
+        last_alerted_position = 9999999;
+    }
 
     @EventHandler
     private void onQueueMsgReceive(ReceiveMessageEvent event) {
