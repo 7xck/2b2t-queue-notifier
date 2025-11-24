@@ -19,8 +19,9 @@ import meteordevelopment.meteorclient.settings.*;
 
 
 public class QueueNotifier extends Module {
+    private static final int INITIAL_QUEUE_POSITION = 9999999;
     Set<Integer> seen_positions = new HashSet<>();
-    Integer last_alerted_position = 9999999;
+    Integer last_alerted_position = INITIAL_QUEUE_POSITION;
     static Pattern pattern = Pattern.compile("Position in queue: (\\d+)");
 
     public QueueNotifier() {
@@ -64,7 +65,7 @@ public class QueueNotifier extends Module {
 
     private void resetState() {
         seen_positions.clear();
-        last_alerted_position = 9999999;
+        last_alerted_position = INITIAL_QUEUE_POSITION;
     }
 
     @EventHandler
